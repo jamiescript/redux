@@ -2,23 +2,20 @@ import { createStore } from "redux";
 
 const initialState = { value: 0 };
 
-const incrementAction = {
-  type: "INCREMENT",
-};
+// constants
+const INCREMENT = "INCREMENT";
+const ADD = "ADD";
 
-const addAction = (number) => {
-  return {
-    type: "ADD",
-    payload: number,
-  };
-};
+// action creators
+const increment = () => ({ type: INCREMENT });
+const add = (number) => ({ type: ADD, payload: number });
 
 const reducer = (state = initialState, action) => {
-  if (action.type === "INCREMENT") {
+  if (action.type === INCREMENT) {
     return { value: state.value + 1 };
   }
 
-  if (action.type === "ADD") {
+  if (action.type === ADD) {
     return { value: state.value + action.payload };
   }
 
@@ -28,8 +25,8 @@ const reducer = (state = initialState, action) => {
 const store = createStore(reducer);
 
 console.log(store.getState());
-store.dispatch(incrementAction);
+store.dispatch(increment());
 console.log(store.getState());
-store.dispatch(addAction(10));
-store.dispatch(addAction(5));
+store.dispatch(add(10));
+store.dispatch(add(5));
 console.log(store.getState());
