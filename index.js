@@ -1,4 +1,9 @@
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
+
+const logger = (store) => (next) => (action) => {
+  console.log("DISPATCHED ACTION: ", action);
+  next(action);
+};
 
 // constants
 const CHANGE_USER_EMAIL = "CHANGE_USER_EMAIL";
@@ -49,7 +54,7 @@ const rootReducer = combineReducers({
   cart: cartReducer,
 });
 
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, applyMiddleware(logger));
 console.log(store.getState());
 store.dispatch(changeUserEmail("jamie@gmail.com"));
 console.log(store.getState());
