@@ -1,4 +1,4 @@
-import { createStore } from "redux";
+import { createStore, combineReducers } from "redux";
 
 // constants
 const CHANGE_USER_EMAIL = "CHANGE_USER_EMAIL";
@@ -24,29 +24,32 @@ const initialState = {
   },
 };
 
-const reducer = (state = initialState, action) => {
+const userReducer = (user = initialState.user, action) => {
   if (action.type === CHANGE_USER_EMAIL) {
     return {
-      ...state,
-      user: {
-        ...state.user,
-        email: action.payload.email,
-      },
+      ...user,
+      email: action.payload.email,
     };
   }
-  if (action.type === ADD_PRODUCT) {
-    return {
-      ...state,
-      cart: {
-        ...state.cart,
-        products: [...state.cart.products, action.payload.product],
-      },
-    };
-  }
-  return state;
+  return user;
 };
 
-const store = createStore(reducer);
+const cartReducer = (cart = initialState.cart, action) => {
+  if (action.type === ADD_PRODUCT) {
+    return {
+      ...cart,
+      products: [...cart.products, action.payload.product],
+    };
+  }
+  return cart;
+};
+
+const rootReducer = combineReducers({
+  user: userReducer,
+  cart: cartReducer,
+});
+
+const store = createStore(rootReducer);
 console.log(store.getState());
 store.dispatch(changeUserEmail("jamie@gmail.com"));
 console.log(store.getState());
